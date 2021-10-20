@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food App</title>
+</head>
+<link rel="stylesheet" href="/styles/style.css">
+
+<body >
+    <div id="navbar"></div>
+    <input type="text" name="" id="recepie">
+    <button onclick="showrecepie()">Search Recipie</button>
+
+    <div id="container"></div>
+</body>
+
+</html>
+
+
+
+<script type="module">
+    //www.themealdb.com/api/json/v1/1/search.php?s=Arrabiata
+  import navbar from "./components/navbar.js"
+  let navbardiv = document.getElementById("navbar")
+  navbardiv.innerHTML = navbar()
+
+
+</script>
+<script>
+
+ async function showrecepie() {
+    let query = document.getElementById("recepie").value
+        let res = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${query}`)
+        let data = await res.json();
+        
+        append(data.meals)
+    }
+    let product = document.getElementById("container")
+
+    function append(data) {
+        product.innerHTML = null
+        data.forEach(({
+            strMeal,
+            strArea,
+            strInstructions,
+            strMealThumb,
+            strYoutube
+        }) => {
+
+            var div = document.createElement("div")
+            var img = document.createElement("img")
+            img.src = strMealThumb;
+            var origin = document.createElement("h4")
+            origin.textContent = strArea;
+            var rec = document.createElement("p")
+            rec.textContent = strInstructions;
+            var name = document.createElement("h2")
+            name.textContent = strMeal;
+            div.append(name, img, origin, rec)
+            product.append(div)
+
+        })
+
+    }
+</script>
